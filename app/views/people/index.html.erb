@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Title</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Your HTML content with Tailwind CSS classes -->
+  <div class="container mx-auto px-4">
+    <!-- Add Person Form -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold mb-4">Add Person</h1>
+      <%= form_with(model: @person, url: people_path, local: true) do |form| %>
+        <div class="mb-4">
+          <%= form.label :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :occupation, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :occupation, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :phone_number, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :phone_number, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <%= form.submit "Submit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      <% end %>
+    </div>
+
+    <!-- People's Occupations List -->
+    <div>
+      <h1 class="text-2xl font-bold mb-4">People's Occupations</h1>
+      <ul>
+        <% @people.each do |person| %>
+          <li class="mb-4 p-4 rounded-md shadow-md bg-white">
+            <span class="text-lg font-semibold"><%= person.name %></span>
+            <span class="block text-gray-600"><%= person.occupation %></span>
+            <span class="block text-gray-600"><%= person.phone_number %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
