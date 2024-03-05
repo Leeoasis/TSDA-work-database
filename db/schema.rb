@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_225854) do
     t.string "occupation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "phone_number"
+    t.string "phone_number"
   end
 
 end
