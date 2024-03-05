@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Title</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mx-auto px-4">
+    <!-- Add Person Form -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold mb-4">Enter your details</h1>
+      <%= form_with(model: @person, url: people_path, local: true) do |form| %>
+        <div class="mb-4">
+          <%= form.label :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :occupation, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :occupation, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :phone_number, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :phone_number, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <%= form.submit "Submit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      <% end %>
+    </div>
+
+    <!-- People's Occupations List -->
+    <div>
+      <h1 class="text-2xl font-bold mb-4">People's Occupations</h1>
+      <!-- Occupation Filter -->
+      <div class="mb-4">
+        <label for="occupationFilter" class="block text-gray-700 text-sm font-bold mb-2">Filter by Occupation:</label>
+        <select id="occupationFilter" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="">All</option>
+          <% @occupations.each do |occupation| %>
+            <option value="<%= occupation %>"><%= occupation %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="mb-4">
+        <label for="searchInput" class="block text-gray-700 text-sm font-bold mb-2">Search:</label>
+        <input type="text" id="searchInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Search...">
+      </div>
+
+      <!-- People List -->
+      <ul>
+        <% @people.each do |person| %>
+          <li class="person-item mb-4 p-4 rounded-md shadow-md bg-white" data-occupation="<%= person.occupation.downcase %>">
+            <span class="text-lg font-semibold"><%= person.name %></span>
+            <span class="block text-gray-600"><%= person.occupation %></span>
+            <span class="block text-gray-600"><%= person.phone_number %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const occupationFilter = document.getElementById('occupationFilter');
+      const searchInput = document.getElementById('searchInput');
+      const peopleList = document.querySelectorAll('.person-item');
+
+      // Event listener for occupation filter
+      occupationFilter.addEventListener('change', function() {
+        const selectedOccupation = occupationFilter.value.toLowerCase();
+        filterPeople(selectedOccupation, searchInput.value.toLowerCase());
+      });
+
+      // Event listener for search input
+      searchInput.addEventListener('input', function() {
+        const selectedOccupation = occupationFilter.value.toLowerCase();
+        filterPeople(selectedOccupation, searchInput.value.toLowerCase());
+      });
+
+      // Function to filter people based on occupation and search query
+      function filterPeople(occupation, searchQuery) {
+        peopleList.forEach(person => {
+          const occupationMatch = !occupation || person.dataset.occupation === occupation;
+          const searchMatch = person.textContent.toLowerCase().includes(searchQuery);
+          if (occupationMatch && searchMatch) {
+            person.style.display = 'block';
+          } else {
+            person.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
